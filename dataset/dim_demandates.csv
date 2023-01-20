@@ -1,0 +1,25 @@
+edad;sexo;procedencia;cod_demandante;edad_index;cod_segmento
+<30;Hombre;Comunitario;Hombre_<30_Comunitario;1;1
+<30;Hombre;Extracomunitario;Hombre_<30_Extracomunitario;1;2
+<30;Hombre;No Extranjero;Hombre_<30_No Extranjero;1;3
+<30;Mujer;Comunitario;Mujer_<30_Comunitario;1;4
+<30;Mujer;Extracomunitario;Mujer_<30_Extracomunitario;1;5
+<30;Mujer;No Extranjero;Mujer_<30_No Extranjero;1;6
+30 a 44;Hombre;Comunitario;Hombre_30 a 44_Comunitario;2;7
+30 a 44;Hombre;Extracomunitario;Hombre_30 a 44_Extracomunitario;2;8
+30 a 44;Hombre;No Extranjero;Hombre_30 a 44_No Extranjero;2;9
+30 a 44;Mujer;Comunitario;Mujer_30 a 44_Comunitario;2;10
+30 a 44;Mujer;Extracomunitario;Mujer_30 a 44_Extracomunitario;2;11
+30 a 44;Mujer;No Extranjero;Mujer_30 a 44_No Extranjero;2;12
+45 a 54;Hombre;Comunitario;Hombre_45 a 54_Comunitario;3;13
+45 a 54;Hombre;Extracomunitario;Hombre_45 a 54_Extracomunitario;3;14
+45 a 54;Hombre;No Extranjero;Hombre_45 a 54_No Extranjero;3;15
+45 a 54;Mujer;Comunitario;Mujer_45 a 54_Comunitario;3;16
+45 a 54;Mujer;Extracomunitario;Mujer_45 a 54_Extracomunitario;3;17
+45 a 54;Mujer;No Extranjero;Mujer_45 a 54_No Extranjero;3;18
+>=55;Hombre;Comunitario;Hombre_>=55_Comunitario;4;19
+>=55;Hombre;Extracomunitario;Hombre_>=55_Extracomunitario;4;20
+>=55;Hombre;No Extranjero;Hombre_>=55_No Extranjero;4;21
+>=55;Mujer;Comunitario;Mujer_>=55_Comunitario;4;22
+>=55;Mujer;Extracomunitario;Mujer_>=55_Extracomunitario;4;23
+>=55;Mujer;No Extranjero;Mujer_>=55_No Extranjero;4;24
