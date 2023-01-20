@@ -1,0 +1,150 @@
+---
+title: "Leedme"
+author: "Luis Ángel Iranzuegi"
+date: "17/01/2023"
+output:
+  html_document: default
+---
+
+<center>![](imagen/esku-tza 05.jpg)</center>
+<center><a href ="https://alava.sartu.net/">Sartu</a></center>
+
+
+
+
+
+# <span style="color:#0168B5">**1. Introducción**</span>
+
+### <span style="color:#666666">**1.1. Objetivo**</span>
+
+Ofrecer una alternativa al Lenguaje M en el proceso de carga, limpieza y definición de las nuevas variables, utilizando para ello **R**, **siempre y cuando la estructura de los datasets sea la misma.**
+
+### <span style="color:#666666">**1.2. Cargar librerías**</span>
+
+Como paso previo, **cargaremos las librerías** que utilizaremos en el proceso de obtener la data.
+
+```{r echo=TRUE}
+library(tidyverse)
+library(lubridate)
+```
+
+# <span style="color:#0168B5">**2. Cargar los datos desde una carpeta**</span>
+
+En primer lugar,  antes de comenzar con el proceso de importar los datasets, definiremos el tipo de columna que esperamos, de este modo, evitamos sorpresas y se respeta la estructura en todos los datasets en relación con el tipo de dato . Para  ello hemos utilizado una representación de cadena compacta donde cada carácter representa una columna.
+
+
+```{r echo=TRUE}
+
+types <-  'cccccccccccccccccccccccccccccccccc'
+
+```
+
+En segundo lugar, como los archivos csv que están en la **carpeta data** tienen la misma estructura en cuanto a nombres de columnas y además nos hemos asegurado que el tipo de columna sea igual en todos (character // cadena de texto), **replicamos el proceso de combinar y transformar.**
+
+```{r echo=TRUE}
+
+setwd("C:/Users/Usuario/Desktop/Power BI/23. PowerBI Bilbao/data")
+
+files <- list.files(path = "C:/Users/Usuario/Desktop/Power BI/23. PowerBI Bilbao/data",
+                    pattern = "*.csv")
+df <- read_csv2 (files, col_types = types)
+
+```
+
+# <span style="color:#0168B5">**3. Limpieza de datos**</span>
+
+Realizamos el proceso de limpieza del dataset resultante de combinar los 52 archivos csv de datos. 
+
+
+**Seleccionamos las columnas** con las que iniciamos este proceso de limpieza de datos.
+
+```{r echo=TRUE}
+
+df <- df %>% 
+  select(year_month, colectivo_reducido, edad, edad_index, sexo, procedencia,
+         municipio, municipio_nombre, comarca_nombre, contributiva, rgi, subsidio,
+         total)
+
+```
+
+**Variabale year_month.** Generamos dos variables a partir de year_month (año y mes). Posteriormente, generamos la variable fecha.
+
+```{r echo=TRUE}
+
+df <- df %>% 
+    separate(year_month, into = c("año", "mes"), sep ="-")
+
+df <- df %>% 
+  mutate(
+    fecha = ymd(paste(año, mes, "01"))
+  )
+
+
+```
+
+**Convertimos a factor y a númerico entero las variables seleccionadas.**, generando también una **nueva variable** que la denominaremos **ayuda**.
+
+```{r echo=TRUE}
+
+df <- df %>%
+  mutate(
+    año = parse_factor(año),
+    mes = parse_factor(mes),
+    colectivo_reducido = parse_factor(colectivo_reducido),
+    edad = parse_factor(edad),
+    edad_index = parse_factor(edad_index),
+    sexo = parse_factor(sexo),
+    procedencia = parse_factor(procedencia),
+    municipio_nombre = parse_factor(municipio_nombre),
+    comarca_nombre = parse_factor(comarca_nombre),
+    municipio = parse_integer(municipio),
+    contributiva = parse_integer(contributiva),
+    rgi = parse_integer(rgi),
+    subsidio = parse_integer(subsidio),
+    total = parse_integer(total),
+    ayuda = ifelse( contributiva == 1 | rgi == 1 | subsidio == 1, 1,0)
+  )
+
+
+```
+
+
+**Agrupamos según fecha, colectivo_reducido, sexo, edad, procedencia,municipio, ayuda.**
+
+Previamente, la columna total la renombramos como **Demandantes.**
+
+```{r echo=TRUE}
+
+df <- df %>% 
+  rename(demandantes = total)
+  
+df <- df %>% 
+  group_by(fecha, colectivo_reducido, edad, edad_index, sexo, 
+           procedencia,municipio,municipio_nombre,ayuda)%>%
+  summarise(demandantes=sum(demandantes))
+
+```
+
+**Definimos la variable riesgo a partir de las variables colectivo_reducido y ayuda.** 
+
+Donde el valor de 0 significa que es un colectivo donde no se percibe riesgo de exclusión aparente y 1 donde el riesgo de exclusión puede ser más perceptible.
+
+```{r echo=TRUE}
+
+df <- df %>% 
+  mutate(
+    riesgo = ifelse(ayuda == 1 & colectivo_reducido == 'Paro registrado', 1 , 0)
+  )
+
+df
+
+```
+
+Por último, como utilizaremos una visualización de Mapbox donde vinculamos una ficha cargada con la cartografía de los municipios de la Comunidad Autónoma del País Vasco con el mapa, renombramos la columna municipio del dataset como EUSTAT que es como se denomina la columna de la cartografía que nos proporciona la información.
+
+```{r echo=TRUE}
+
+df <- df %>% 
+  rename(EUSTAT = municipio)
+
+```
