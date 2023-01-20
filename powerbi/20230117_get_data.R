@@ -20,7 +20,7 @@ df <- read_csv2 (files, col_types = types)
 df %>% glimpse()
 getwd()
 
-## Limpieza y ajuste del dataset ###################
+## Limpieza, definición de variables y ajuste del dataset ###################
 
 df <- df %>% 
   select(year_month, colectivo_reducido, edad, edad_index, sexo, procedencia,
