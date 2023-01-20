@@ -1,12 +1,18 @@
+# Cargar librerias
+
 library(tidyverse)
 library(lubridate)
 
+# Variables de tipo cadena (la variable municipio da error en el supuesto de Ordunia)
+# Tener presente que este script funcionará siempre que la estructura de los ficheros de datos sea igual en columnas y nombre de columnas)
+
 types <- 'cccccccccccccccccccccccccccccccccc'
-setwd("C:/Users/Usuario/Desktop/Power BI/23. PowerBI Bilbao/data")
+setwd("C:/poner ruta de la carpeta donde estén los archivos")
 
 
+# Utilizamos read_csv2 porque el separador de campos es ";" y "," para el punto decimal.
 
-files <- list.files(path = "C:/Users/Usuario/Desktop/Power BI/23. PowerBI Bilbao/data",
+files <- list.files(path = "C:/poner ruta de la carpeta donde estén los archivos",
                     pattern = "*.csv")
 df <- read_csv2 (files, col_types = types)
 
